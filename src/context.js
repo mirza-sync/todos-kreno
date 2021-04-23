@@ -25,6 +25,21 @@ const reducer = (prevState, action) => {
                 return {
                     todos: [ ...prevState.todos, action.payload ]
                 }
+
+            case 'TOGGLE-EDIT':
+                return {
+                    editStatus: action.payload
+                }
+            
+            case 'EDIT':
+                return {
+                    todos: prevState.todos.map((todo) => {
+                        if(todo.id === action.payload) {
+                            
+                        }
+                    return todo
+                    })
+                }
     
         default:
             return prevState;
@@ -37,20 +52,24 @@ export default class Provider extends Component {
             {
                 id: 1,
                 title: "Workout",
-                complete: false
+                complete: false,
+                note: ""
             },
             {
                 id: 2,
                 title: "Cook",
-                complete: false
+                complete: false,
+                note: ""
             },
             {
                 id: 3,
                 title: "Sleep",
-                complete: false
+                complete: false,
+                note: ""
             },
         ],
-        dispatch: (action) => this.setState(prevState => reducer(prevState, action))
+        dispatch: (action) => this.setState(prevState => reducer(prevState, action)),
+        editStatus: false
     }
 
     render() {
