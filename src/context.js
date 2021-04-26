@@ -7,12 +7,10 @@ const reducer = (prevState, action) => {
             return {
                 todos: prevState.todos.map((todo) => {
                     if(todo.id === action.payload) {
-                        console.log('Before', todo.complete)
-                        todo.complete = !todo.complete
-                        console.log('after', todo.complete)
+                        return { ...todo, complete: !todo.complete }
+                    } else {
+                        return todo
                     }
-                    console.log("Todooo", todo)
-                    return todo
                 })
             }
 
