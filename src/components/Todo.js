@@ -2,6 +2,10 @@ import React, { Component } from 'react'
 import { Consumer } from '../context'
 
 export default class Todo extends Component {
+    state = {
+        editStatus: false
+    }
+
     style = () => {
         const { complete } = this.props.todo
         return { textDecoration: complete ? 'line-through' : 'none' }
@@ -17,14 +21,15 @@ export default class Todo extends Component {
         dispatch({ type: 'REMOVE', payload: id })
     }
 
-    toggleEdit = (editStatus, dispatch) => {
-        dispatch({ type: 'TOGGLE-EDIT', payload: !editStatus })
+    toggleEdit = (editStatus) => {
+        this.setState({editStatus: !editStatus})
     }
 
     update = (e) => {
-        this.setState({
-            title: e.target.value
-        })
+        console.log("Update")
+        // this.setState({
+        //     title: e.target.value
+        // })
     }
 
     edit = (id, dispatch) => {
@@ -37,32 +42,34 @@ export default class Todo extends Component {
         return (
             <Consumer>
                 {value => {
-                    const { dispatch, editStatus } = value
+                    const { dispatch } = value
 
-                    return <h3 className="text-dark text-center p-1 bg-light border-bottom" style={this.style()}>
-                                <div className="d-flex justify-content-between">
-                                    <i className="far fa-times-circle fa-sm float-start m-1 text-danger" 
-                                    onClick={this.remove.bind(this, id, dispatch)}></i>
-                                        {editStatus ? 
-                                        (
-                                            <div className="">
-                                                <input type="text" 
-                                                className="form-control rounded-0" 
-                                                onChange={this.update} 
-                                                value={title} />
-                                                <button className="form-control btn-secondary">Save</button>
-                                            </div>
-                                        ) : 
-                                            title
-                                        }
-                                    <div>
-                                        <input type="checkbox" name="" id="" className="m-2 float-end" 
-                                        onChange={this.toggle.bind(this, id, dispatch)}/>
-                                        <i className="far fa-edit fa-sm float-end m-1 text-primary" 
-                                        onClick={this.toggleEdit.bind(this, editStatus, dispatch)}></i>
-                                    </div>
+                    return (
+                        <div className="h3 text-dark text-center p-1 bg-light border-bottom" style={this.style()}>
+                            <div className="d-flex justify-content-between align-items-center">
+                                <i className="far fa-times-circle fa-sm float-start m-1 text-danger" 
+                                onClick={this.remove.bind(this, id, dispatch)}></i>
+                                    {this.state.editStatus ? 
+                                    (
+                                        <div className="d-flex">
+                                            <input type="text" 
+                                            className="form-control" 
+                                            onChange={this.update} 
+                                            value={title} />
+                                            <button className="btn-secondary btn-sm border">Save</button>
+                                        </div>
+                                    ) : 
+                                        title
+                                    }
+                                <div className="d-flex align-items-center">
+                                    <i className="far fa-edit fa-sm float-end m-2 text-primary" 
+                                    onClick={this.toggleEdit.bind(this, this.state.editStatus)}></i>
+                                    <input type="checkbox" name="" id="" className="float-end m-2" 
+                                    onChange={this.toggle.bind(this, id, dispatch)}/>
                                 </div>
-                            </h3>
+                            </div>
+                        </div>
+                    )
                 }}
             </Consumer>
         )
