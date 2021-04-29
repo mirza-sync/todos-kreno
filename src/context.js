@@ -67,7 +67,6 @@ export default class Provider extends Component {
             },
         ],
         dispatch: (action) => this.setState(prevState => reducer(prevState, action)),
-        editStatus: false
     }
 
     render() {
